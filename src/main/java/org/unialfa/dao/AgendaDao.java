@@ -7,6 +7,8 @@ import org.unialfa.model.Idoso;
 import org.unialfa.model.Vacina;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,30 +29,32 @@ public class AgendaDao {
     }
 
     public void inserir(Agenda agenda) throws Exception {
-        String sql = "INSERT INTO agenda (idAgente, idIdoso, idVacina, dataHoraVisita, info, dataAplicacao) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO agenda (idAgente, idIdoso, idVacina, dataVisita, horaVisita, info, dataAplicacao) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = connection.prepareStatement(sql);
 
         ps.setLong(1, agenda.getIdAgente());
         ps.setLong(2, agenda.getIdIdoso());
         ps.setLong(3, agenda.getIdVacina());
-        ps.setTimestamp(4, java.sql.Timestamp.valueOf(agenda.getDataHoraVisita()));
-        ps.setString(5, agenda.getInfo());
-        ps.setDate(6, Date.valueOf(agenda.getDataAplicacao()));
+        ps.setDate(4, Date.valueOf(agenda.getDataVisita()));
+        ps.setTime(5, Time.valueOf(agenda.getHoraVisita()));
+        ps.setString(6, agenda.getInfo());
+        ps.setDate(7, Date.valueOf(agenda.getDataAplicacao()));
 
         ps.execute();
     }
 
     public void atualizar(Agenda agenda) throws SQLException {
-        String sql = "UPDATE agenda SET idAgente = ?, idIdoso = ?, idVacina = ?, dataHoraVisita = ?, info = ?, dataAplicacao = ? WHERE id = ?";
+        String sql = "UPDATE agenda SET idAgente = ?, idIdoso = ?, idVacina = ?, dataVisita = ?, horaVisita = ?, info = ?, dataAplicacao = ? WHERE id = ?";
         PreparedStatement ps = connection.prepareStatement(sql);
 
         ps.setLong(1, agenda.getIdAgente());
         ps.setLong(2, agenda.getIdIdoso());
         ps.setLong(3, agenda.getIdVacina());
-        ps.setTimestamp(4, java.sql.Timestamp.valueOf(agenda.getDataHoraVisita()));
-        ps.setString(5, agenda.getInfo());
-        ps.setDate(6, Date.valueOf(agenda.getDataAplicacao()));
-        ps.setLong(7, agenda.getId());
+        ps.setDate(4, Date.valueOf(agenda.getDataVisita()));
+        ps.setTime(5, Time.valueOf(agenda.getHoraVisita()));
+        ps.setString(6, agenda.getInfo());
+        ps.setDate(7, Date.valueOf(agenda.getDataAplicacao()));
+        ps.setLong(8, agenda.getId());
 
         ps.execute();
     }
@@ -63,22 +67,26 @@ public class AgendaDao {
     }
 
     public List<Agenda> listarTodos() throws SQLException {
-        List<Agenda> agenda = new ArrayList<Agenda>();
+        List<Agenda> agendas = new ArrayList<>();
 
-        ResultSet rs = connection.prepareStatement("SELECT * FROM agenda").executeQuery();
-        while (rs.next()) {
-            agenda.add(new Agenda(
-                    rs.getLong("id"),
-                    rs.getLong("idAgente"),
-                    rs.getLong("idIdoso"),
-                    rs.getLong("idVacina"),
-                    rs.getTimestamp("dataHoraVisita").toLocalDateTime(),
-                    rs.getString("info"),
-                    rs.getDate("dataAplicacao").toLocalDate()
-            ));
+        String sql = "SELECT * FROM agenda";
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Long idAgente = rs.getLong("idAgente");
+                Long idIdoso = rs.getLong("idIdoso");
+                Long idVacina = rs.getLong("idVacina");
+                LocalDate dataVisita = rs.getDate("dataVisita").toLocalDate();
+                LocalTime horaVisita = rs.getTime("horaVisita").toLocalTime();
+                String info = rs.getString("info");
+                LocalDate dataAplicacao = rs.getDate("dataAplicacao").toLocalDate();
+
+                agendas.add(new Agenda(id, idAgente, idIdoso, idVacina, dataVisita, horaVisita, info, dataAplicacao));
+            }
         }
-        rs.close();
-        return agenda;
+        return agendas;
     }
 
 
@@ -138,7 +146,8 @@ public class AgendaDao {
                         rs.getLong("idAgente"),
                         rs.getLong("idIdoso"),
                         rs.getLong("idVacina"),
-                        rs.getTimestamp("dataHoraVisita").toLocalDateTime(),
+                        rs.getDate("dataVisita").toLocalDate(),
+                        rs.getTime("horaVisita").toLocalTime(),
                         rs.getString("info"),
                         rs.getDate("dataAplicacao").toLocalDate()
                 );

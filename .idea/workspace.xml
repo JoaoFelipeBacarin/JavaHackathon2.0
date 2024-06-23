@@ -4,30 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b33c142-6ec3-4b52-aa75-8e08b7ba28a5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/AgendaDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/AgenteDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/CuidadorDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/IdosoDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/VacinaDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Agenda.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Agente.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Cuidador.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Idoso.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Vacina.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/service/AgendaService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/service/AgenteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/service/CuidadorService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/service/IdosoService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/service/VacinaService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/AgendaForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/AgenteForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/CuidadorForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/IdosoForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/VacinaForm.java" afterDir="false" />
+    <list default="true" id="8b33c142-6ec3-4b52-aa75-8e08b7ba28a5" name="Changes" comment="Quase">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/AgendaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/AgendaDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Agenda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Agenda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/unialfa/view/AgendaForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/AgendaForm.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +25,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;JoaoFelipeBacarin&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/JoaoFelipeBacarin/JavaHackathon2.0.git&quot;,
+    &quot;accountId&quot;: &quot;76c61ee4-3f20-44d3-900b-d0c707fe1bc5&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -55,16 +48,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.unialfa.model" />
@@ -101,7 +94,20 @@
       <option name="presentableId" value="Default" />
       <updated>1719155547610</updated>
     </task>
+    <task id="LOCAL-00001" summary="Quase...">
+      <option name="closed" value="true" />
+      <created>1719163793355</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1719163793355</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Quase..." />
+    <option name="LAST_COMMIT_MESSAGE" value="Quase..." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/JavaHackathon2_0$Main.ic" NAME="Main Coverage Results" MODIFIED="1719160823949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

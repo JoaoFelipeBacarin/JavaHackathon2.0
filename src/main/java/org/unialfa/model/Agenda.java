@@ -1,47 +1,52 @@
 package org.unialfa.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Agenda {
     private Long id;
     private Long idAgente;
     private Long idIdoso;
     private Long idVacina;
-    private LocalDateTime dataHoraVisita;
+    private LocalDate dataVisita;
+    private LocalTime horaVisita;
     private String info;
     private LocalDate dataAplicacao;
     private String agenteNome;
     private String idosoNome;
     private String vacinaNome;
 
-
-    public Agenda(LocalDateTime dataHoraVisita, String info, LocalDate dataAplicacao) {
-        this.dataHoraVisita = dataHoraVisita;
+    public Agenda(Long idAgente, Long idIdoso, Long idVacina, LocalDate dataVisita, LocalTime horaVisita, String info, LocalDate dataAplicacao, String agenteNome, String idosoNome, String vacinaNome) {
+        this.idAgente = idAgente;
+        this.idIdoso = idIdoso;
+        this.idVacina = idVacina;
+        this.dataVisita = dataVisita;
+        this.horaVisita = horaVisita;
         this.info = info;
         this.dataAplicacao = dataAplicacao;
+        this.agenteNome = agenteNome;
+        this.idosoNome = idosoNome;
+        this.vacinaNome = vacinaNome;
     }
 
-    public Agenda(Long id, Long idAgente, Long idIdoso, Long idVacina, LocalDateTime dataHoraVisita, String info, LocalDate dataAplicacao) {
+    public Agenda(Long id, Long idAgente, Long idIdoso, Long idVacina, LocalDate dataVisita, LocalTime horaVisita, String info, LocalDate dataAplicacao, String agenteNome, String idosoNome, String vacinaNome) {
         this.id = id;
         this.idAgente = idAgente;
         this.idIdoso = idIdoso;
         this.idVacina = idVacina;
-        this.dataHoraVisita = dataHoraVisita;
+        this.dataVisita = dataVisita;
+        this.horaVisita = horaVisita;
         this.info = info;
         this.dataAplicacao = dataAplicacao;
+        this.agenteNome = agenteNome;
+        this.idosoNome = idosoNome;
+        this.vacinaNome = vacinaNome;
     }
 
-    public Agenda(long l, LocalDateTime dataHoraVisita, String text, LocalDate dataAplicacao) {
+    public Agenda(long id, long idAgente, long idIdoso, long idVacina, LocalDate dataVisita, LocalTime horaVisita, String text, LocalDate dataAplicacao) {
     }
 
-    public Agenda(LocalDate dataAplicacao, String text, LocalDateTime dataHoraVisita) {
-    }
-
-    public Agenda(LocalDate dataAplicacao, String toolTipText, String toolTipText1, String toolTipText2, String text, LocalDateTime dataHoraVisita) {
-    }
-
-    public Agenda(long id, LocalDateTime dataHoraVisita, String text, String toolTipText, String toolTipText1, String toolTipText2, LocalDate dataAplicacao) {
+    public Agenda(long idAgente, long idIdoso, long idVacina, LocalDate dataVisita, LocalTime horaVisita, String text, LocalDate dataAplicacao) {
     }
 
     public Long getId() {
@@ -76,14 +81,6 @@ public class Agenda {
         this.idVacina = idVacina;
     }
 
-    public LocalDateTime getDataHoraVisita() {
-        return dataHoraVisita;
-    }
-
-    public void setDataHoraVisita(LocalDateTime dataHoraVisita) {
-        this.dataHoraVisita = dataHoraVisita;
-    }
-
     public String getInfo() {
         return info;
     }
@@ -112,6 +109,22 @@ public class Agenda {
         return vacinaNome;
     }
 
+    public LocalDate getDataVisita() {
+        return dataVisita;
+    }
+
+    public void setDataVisita(LocalDate dataVisita) {
+        this.dataVisita = dataVisita;
+    }
+
+    public LocalTime getHoraVisita() {
+        return horaVisita;
+    }
+
+    public void setHoraVisita(LocalTime horaVisita) {
+        this.horaVisita = horaVisita;
+    }
+
     @Override
     public String toString() {
         return "Agenda{" +
@@ -119,9 +132,13 @@ public class Agenda {
                 ", idAgente=" + idAgente +
                 ", idIdoso=" + idIdoso +
                 ", idVacina=" + idVacina +
-                ", dataHoraVisita=" + dataHoraVisita +
+                ", dataVisita=" + dataVisita +
+                ", horaVisita=" + horaVisita +
                 ", info='" + info + '\'' +
                 ", dataAplicacao=" + dataAplicacao +
+                ", agenteNome='" + agenteNome + '\'' +
+                ", idosoNome='" + idosoNome + '\'' +
+                ", vacinaNome='" + vacinaNome + '\'' +
                 '}';
     }
 }

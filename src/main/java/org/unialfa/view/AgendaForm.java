@@ -9,9 +9,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -26,8 +27,10 @@ public class AgendaForm extends JFrame {
     private JComboBox campoIdIdoso;
     private JLabel labelIdVacina;
     private JComboBox campoIdVacina;
-    private JLabel labelDataHoraVisita;
-    private JTextField campoDataHoraVisita;
+    private JLabel labelDataVisita;
+    private JTextField campoDataVisita;
+    private JLabel labelHoraVisita;
+    private JTextField campoHoraVisita;
     private JLabel labelInfo;
     private JTextField campoInfo;
     private JLabel labelDataAplicacao;
@@ -43,7 +46,7 @@ public class AgendaForm extends JFrame {
         service = new AgendaService();
 
         setTitle("Agenda");
-        setSize(650, 500);
+        setSize(800, 500);
 
         JPanel painelEntrada = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -93,19 +96,36 @@ public class AgendaForm extends JFrame {
         constraints.gridy = 1;
         painelEntrada.add(campoIdVacina, constraints);
 
-        labelDataHoraVisita = new JLabel("Data e Hora da Visita:");
+        labelDataVisita = new JLabel("Data e Hora da Visita:");
         constraints.gridx = 0;
         constraints.gridy = 2;
-        painelEntrada.add(labelDataHoraVisita, constraints);
+        painelEntrada.add(labelDataVisita, constraints);
 
         try {
-            MaskFormatter dateTimeMask = new MaskFormatter("##/##/#### ##:##");
+            MaskFormatter dateTimeMask = new MaskFormatter("##/##/####");
             dateTimeMask.setPlaceholderCharacter('_');
-            campoDataHoraVisita = new JFormattedTextField(dateTimeMask);
-            campoDataHoraVisita.setColumns(9);
+            campoDataVisita = new JFormattedTextField(dateTimeMask);
+            campoDataVisita.setColumns(6);
             constraints.gridx = 1;
             constraints.gridy = 2;
-            painelEntrada.add(campoDataHoraVisita, constraints);
+            painelEntrada.add(campoDataVisita, constraints);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        labelHoraVisita = new JLabel("Data e Hora da Visita:");
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        painelEntrada.add(labelHoraVisita, constraints);
+
+        try {
+            MaskFormatter dateTimeMask = new MaskFormatter("##:##");
+            dateTimeMask.setPlaceholderCharacter('_');
+            campoHoraVisita = new JFormattedTextField(dateTimeMask);
+            campoHoraVisita.setColumns(3);
+            constraints.gridx = 3;
+            constraints.gridy = 2;
+            painelEntrada.add(campoHoraVisita, constraints);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -122,8 +142,8 @@ public class AgendaForm extends JFrame {
         painelEntrada.add(campoInfo, constraints);
 
         labelDataAplicacao = new JLabel("Data da Aplicação:");
-        constraints.gridx = 2;
-        constraints.gridy = 2;
+        constraints.gridx = 0;
+        constraints.gridy = 3;
         painelEntrada.add(labelDataAplicacao, constraints);
 
         try {
@@ -131,8 +151,8 @@ public class AgendaForm extends JFrame {
             dateMask.setPlaceholderCharacter('_');
             campoDataAplicacao = new JFormattedTextField(dateMask);
             campoDataAplicacao.setColumns(6);
-            constraints.gridx = 3;
-            constraints.gridy = 2;
+            constraints.gridx = 1;
+            constraints.gridy = 3;
             painelEntrada.add(campoDataAplicacao, constraints);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -141,19 +161,19 @@ public class AgendaForm extends JFrame {
         botaoSalvar = new JButton("Salvar");
         botaoSalvar.addActionListener(e -> executarAcaoDoBotao());
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         painelEntrada.add(botaoSalvar, constraints);
 
         botaoCancelar = new JButton("Cancelar");
         botaoCancelar.addActionListener(e -> limparCampos());
         constraints.gridx = 1;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         painelEntrada.add(botaoCancelar, constraints);
 
         botaoDeletar = new JButton("Deletar");
         botaoDeletar.addActionListener(e -> deletarAgenda());
         constraints.gridx = 2;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         painelEntrada.add(botaoDeletar, constraints);
 
         JPanel painelSaida = new JPanel(new BorderLayout());
@@ -184,89 +204,88 @@ public class AgendaForm extends JFrame {
             int selectedRow = tabelaAgenda.getSelectedRow();
             if (selectedRow != -1) {
                 Long id = (Long) tabelaAgenda.getValueAt(selectedRow, 0);
-                Agenda agenda = new AgendaDao().buscarPorId(id); // Chamando o método buscarPorId diretamente da classe AgendaDao
+                Agenda agenda = null;
 
-                campoId.setText(agenda.getId().toString());
-
-                // Definir o agente selecionado
-                for (int i = 0; i < campoIdAgente.getItemCount(); i++) {
-                    if (campoIdAgente.getItemAt(i).equals(agenda.getAgenteNome())) {
-                        campoIdAgente.setSelectedIndex(i);
-                        break;
-                    }
+                try {
+                    agenda = new AgendaDao().buscarPorId(id);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
 
-                // Definir o idoso selecionado
-                for (int i = 0; i < campoIdIdoso.getItemCount(); i++) {
-                    if (campoIdIdoso.getItemAt(i).equals(agenda.getIdosoNome())) {
-                        campoIdIdoso.setSelectedIndex(i);
-                        break;
-                    }
+                if (agenda != null) {
+                    campoId.setText(agenda.getId().toString());
+                    campoIdAgente.setSelectedItem(agenda.getAgenteNome());
+                    campoIdIdoso.setSelectedItem(agenda.getIdosoNome());
+                    campoIdVacina.setSelectedItem(agenda.getVacinaNome());
+                    campoDataVisita.setText(agenda.getDataVisita().format(dateFormatter));
+                    campoHoraVisita.setText(agenda.getHoraVisita().format(dateTimeFormatter));
+                    campoInfo.setText(agenda.getInfo());
+                    campoDataAplicacao.setText(agenda.getDataAplicacao().format(dateFormatter));
                 }
-
-                // Definir a vacina selecionada
-                for (int i = 0; i < campoIdVacina.getItemCount(); i++) {
-                    if (campoIdVacina.getItemAt(i).equals(agenda.getVacinaNome())) {
-                        campoIdVacina.setSelectedIndex(i);
-                        break;
-                    }
-                }
-
-                String dataHoraVisitaStr = agenda.getDataHoraVisita().format(dateTimeFormatter);
-                campoDataHoraVisita.setText(dataHoraVisitaStr);
-
-                campoInfo.setText(agenda.getInfo());
-
-                String dataAplicacaoStr = agenda.getDataAplicacao().format(dateFormatter);
-                campoDataAplicacao.setText(dataAplicacaoStr);
             }
         }
     }
 
     private void limparCampos() {
         campoId.setText("");
-        campoDataHoraVisita.setText("");
+        campoDataVisita.setText("");
+        campoHoraVisita.setText("");
         campoInfo.setText("");
         campoDataAplicacao.setText("");
     }
 
-    private Agenda construirAgenda() throws Exception {
-        LocalDateTime dataHoraVisita = converterDataHora(campoDataHoraVisita.getText());
+    private Agenda construirAgenda(DateTimeFormatter timeFormatter) throws Exception {
+        LocalDate dataVisita = converterData(campoDataVisita.getText());
+        LocalTime horaVisita = converterHora(campoHoraVisita.getText(), timeFormatter);
         LocalDate dataAplicacao = converterData(campoDataAplicacao.getText());
-        return campoId.getText().isEmpty()
-                ? new Agenda(dataHoraVisita, campoInfo.getText(), dataAplicacao)
-                : new Agenda(Long.parseLong(campoId.getText()), (long) campoIdAgente.getSelectedIndex(), (long) campoIdIdoso.getSelectedIndex(), (long) campoIdVacina.getSelectedIndex(), dataHoraVisita, campoInfo.getText(), dataAplicacao);
+
+        long idAgente = campoIdAgente.getSelectedIndex();
+        long idIdoso = campoIdIdoso.getSelectedIndex();
+        long idVacina = campoIdVacina.getSelectedIndex();
+
+        if (campoId.getText().isEmpty()) {
+            return new Agenda(idAgente, idIdoso, idVacina, dataVisita, horaVisita, campoInfo.getText(), dataAplicacao);
+        } else {
+            long id = Long.parseLong(campoId.getText());
+            return new Agenda(id, idAgente, idIdoso, idVacina, dataVisita, horaVisita, campoInfo.getText(), dataAplicacao);
+        }
     }
 
     private DefaultTableModel carregarDadosAgendas() {
         DefaultTableModel model = new DefaultTableModel();
 
         model.addColumn("ID");
-        model.addColumn("Data e Hora da Agenda");
+        model.addColumn("Data da Agenda");
+        model.addColumn("Hora da Agenda");
         model.addColumn("Agente");
         model.addColumn("Idoso");
         model.addColumn("Vacina");
         model.addColumn("Info");
         model.addColumn("Data da Aplicação");
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        service.listarAgendas().forEach(agenda -> {
-            String dataHoraFormatada = agenda.getDataHoraVisita().format(dateTimeFormatter);
-            String dataAplicacaoFormatada = agenda.getDataAplicacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        List<Agenda> agendas = service.listarAgendas();
+        for (Agenda agenda : agendas) {
+            String dataVisitaFormatada = agenda.getDataVisita() != null ? agenda.getDataVisita().format(dateFormatter) : "";
+            String horaVisitaFormatada = agenda.getHoraVisita() != null ? agenda.getHoraVisita().format(timeFormatter) : "";
+            String dataAplicacaoFormatada = agenda.getDataAplicacao() != null ? agenda.getDataAplicacao().format(dateFormatter) : "";
 
             model.addRow(new Object[]{
-                    agenda.getId(), dataHoraFormatada, agenda.getAgenteNome(), agenda.getIdosoNome(),
-                    agenda.getVacinaNome(), agenda.getInfo(), dataAplicacaoFormatada});
-
-        });
+                    agenda.getId(), dataVisitaFormatada, horaVisitaFormatada,
+                    agenda.getAgenteNome(), agenda.getIdosoNome(), agenda.getVacinaNome(),
+                    agenda.getInfo(), dataAplicacaoFormatada
+            });
+        }
 
         return model;
     }
 
+
     private void executarAcaoDoBotao() {
         try {
-            service.salvar(construirAgenda());
+            service.salvar(construirAgenda(dateTimeFormatter));
             limparCampos();
             tabelaAgenda.setModel(carregarDadosAgendas());
         } catch (Exception e) {
@@ -280,13 +299,15 @@ public class AgendaForm extends JFrame {
         tabelaAgenda.setModel(carregarDadosAgendas());
     }
 
-    private LocalDateTime converterDataHora(String dataHora) throws DateTimeParseException {
-        return LocalDateTime.parse(dataHora, dateTimeFormatter);
-    }
-
     private LocalDate converterData(String data) throws DateTimeParseException {
         return LocalDate.parse(data, dateFormatter);
     }
+
+    public LocalTime converterHora(String hora, DateTimeFormatter timeFormatter) throws DateTimeParseException {
+        return LocalTime.parse((hora + ":00"), timeFormatter);
+    }
+
+
 
     private void preencherAgentes() {
         try {
