@@ -1,2 +1,141 @@
-package org.unialfa.view;public class AgenteForm {
+package org.unialfa.view;
+
+import org.unialfa.model.Agente;
+import org.unialfa.service.AgenteService;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+
+public class AgenteForm extends JFrame {
+    private AgenteService service;
+    private JLabel labelId;
+    private JTextField campoId;
+    private JLabel labelNomeAgente;
+    private JTextField campoNomeAgente;
+    private JButton botaoSalvar;
+    private JButton botaoCancelar;
+    private JButton botaoDeletar;
+    private JTable tabelaAgente;
+
+    public AgenteForm() {
+        service = new AgenteService();
+
+        setTitle("Agente");
+        setSize(400, 400);
+
+        JPanel painelEntrada = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(5, 5, 5, 5);
+
+        labelId = new JLabel();
+        painelEntrada.add(labelId, constraints);
+
+        campoId = new JTextField(5);
+        campoId.setEnabled(false);
+        campoId.setVisible(false);
+        painelEntrada.add(campoId, constraints);
+
+        labelNomeAgente = new JLabel("Nome:");
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        painelEntrada.add(labelNomeAgente, constraints);
+
+        campoNomeAgente = new JTextField(15);
+        campoNomeAgente.setEnabled(true);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        painelEntrada.add(campoNomeAgente, constraints);
+
+        botaoSalvar = new JButton("Salvar");
+        botaoSalvar.addActionListener(e -> executarAcaoDoBotao());
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        painelEntrada.add(botaoSalvar, constraints);
+
+        botaoCancelar = new JButton("Cancelar");
+        botaoCancelar.addActionListener(e -> limparCampos());
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        painelEntrada.add(botaoCancelar, constraints);
+
+        botaoDeletar = new JButton("Deletar");
+        botaoDeletar.addActionListener(e -> deletarAgente());
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        painelEntrada.add(botaoDeletar, constraints);
+
+        JPanel painelSaida = new JPanel(new BorderLayout());
+
+        tabelaAgente = new JTable();
+        tabelaAgente.setModel(carregarDadosAgentes());
+        tabelaAgente.getSelectionModel().addListSelectionListener(e -> selecionarAgente(e));
+        tabelaAgente.setDefaultEditor(Object.class, null);
+
+        JScrollPane scrollPane = new JScrollPane(tabelaAgente);
+        painelSaida.add(scrollPane, BorderLayout.CENTER);
+
+        getContentPane().add(painelEntrada, BorderLayout.NORTH);
+        getContentPane().add(painelSaida, BorderLayout.CENTER);
+
+        setLocationRelativeTo(null);
+
+
+    }
+
+    private void selecionarAgente(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+            int selectedRow = tabelaAgente.getSelectedRow();
+            if (selectedRow != -1) {
+                var id = (Long) tabelaAgente.getValueAt(selectedRow, 0);
+                campoId.setText(id.toString());
+                var nome = (String) tabelaAgente.getValueAt(selectedRow, 1);
+                campoNomeAgente.setText(nome);
+            }
+
+        }
+    }
+
+    private void limparCampos() {
+        campoNomeAgente.setText("");
+        campoId.setText("");
+    }
+
+    private Agente construirAgente() throws Exception {
+        return campoId.getText().isEmpty()
+                ? new Agente(campoNomeAgente.getText())
+                : new Agente(Long.parseLong(campoId.getText()), campoNomeAgente.getText());
+    }
+
+    private DefaultTableModel carregarDadosAgentes() {
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("ID");
+        model.addColumn("Nome");
+
+        service.listarAgentes().forEach(agente ->
+                model.addRow(new Object[]{
+                        agente.getId(),
+                        agente.getNome()
+                })
+        );
+        return model;
+    }
+
+    private void executarAcaoDoBotao() {
+        try {
+            service.salvar(construirAgente());
+            limparCampos();
+            tabelaAgente.setModel(carregarDadosAgentes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deletarAgente() {
+        service.deletar((int) Long.parseLong(campoId.getText()));
+        limparCampos();
+        tabelaAgente.setModel(carregarDadosAgentes());
+    }
 }
