@@ -7,7 +7,6 @@
     <list default="true" id="8b33c142-6ec3-4b52-aa75-8e08b7ba28a5" name="Changes" comment="Quase">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/AgendaDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/dao/AgendaDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Agenda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/model/Agenda.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/unialfa/view/AgendaForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unialfa/view/AgendaForm.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+
 public class AgendaForm extends JFrame {
     private AgendaService service;
     private JLabel labelId;
@@ -282,7 +283,6 @@ public class AgendaForm extends JFrame {
         return model;
     }
 
-
     private void executarAcaoDoBotao() {
         try {
             service.salvar(construirAgenda(dateTimeFormatter));
@@ -307,14 +307,12 @@ public class AgendaForm extends JFrame {
         return LocalTime.parse((hora + ":00"), timeFormatter);
     }
 
-
-
     private void preencherAgentes() {
         try {
             AgendaDao dao = new AgendaDao();
-            List<String> nomesAgentes = dao.listarTodosAgentes();
-            for (String nome : nomesAgentes) {
-                campoIdAgente.addItem(nome);
+            List<Long> idsAgentes = dao.listarTodosIdsAgentes();
+            for (Long id : idsAgentes) {
+                campoIdAgente.addItem(dao.obterNomeAgentePorId(id));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -324,9 +322,9 @@ public class AgendaForm extends JFrame {
     private void preencherIdosos() {
         try {
             AgendaDao dao = new AgendaDao();
-            List<String> nomesIdosos = dao.listarTodosIdososAgenda();
-            for (String nome : nomesIdosos) {
-                campoIdIdoso.addItem(nome);
+            List<Long> idsIdosos = dao.listarTodosIdsIdosos();
+            for (Long id : idsIdosos) {
+                campoIdIdoso.addItem(dao.obterNomeIdosoPorId(id));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -336,9 +334,9 @@ public class AgendaForm extends JFrame {
     private void preencherVacinas() {
         try {
             AgendaDao dao = new AgendaDao();
-            List<String> nomesVacinas = dao.listarTodasVacinas();
-            for (String nome : nomesVacinas) {
-                campoIdVacina.addItem(nome);
+            List<Long> idsVacinas = dao.listarTodosIdsVacinas();
+            for (Long id : idsVacinas) {
+                campoIdVacina.addItem(dao.obterNomeVacinaPorId(id));
             }
         } catch (Exception e) {
             e.printStackTrace();

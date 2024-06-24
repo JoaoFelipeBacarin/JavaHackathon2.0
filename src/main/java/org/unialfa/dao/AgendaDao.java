@@ -89,22 +89,6 @@ public class AgendaDao {
         return agendas;
     }
 
-
-    public List<String> listarTodosAgentes() {
-        List<String> nomesAgentes = new ArrayList<>();
-        try {
-            var dao = new AgenteDao();
-            List<Agente> agentes = dao.listarTodos();
-            for (Agente agente : agentes) {
-                nomesAgentes.add(agente.getNome());
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return nomesAgentes;
-    }
-
-
     public List<String> listarTodasVacinas() {
         List<String> nomesVacinas = new ArrayList<>();
         try {
@@ -159,39 +143,99 @@ public class AgendaDao {
         return agenda;
     }
 
-    /*public Agente buscarAgentePorId(long id) throws SQLException {
-        String sql = "SELECT nome FROM agente WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Agente(id, rs.getString("nome"));
+    public List<Long> listarTodosIdsAgentes() {
+        List<Long> idsAgentes = new ArrayList<>();
+        String query = "SELECT id FROM agente";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                idsAgentes.add(rs.getLong("id"));
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return null;
+        return idsAgentes;
     }
 
-    public Idoso buscarIdosoPorId(long id) throws SQLException {
-        String sql = "SELECT nome FROM idoso WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Idoso(id, rs.getString("nome"));
+    public String obterNomeAgentePorId(Long id) {
+        String nomeAgente = null;
+        String query = "SELECT nome FROM agente WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    nomeAgente = rs.getString("nome");
+                }
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return null;
+        return nomeAgente;
     }
 
-    public Vacina buscarVacinaPorId(long id) throws SQLException {
-        String sql = "SELECT nome FROM vacina WHERE id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Vacina(id, rs.getString("nome"));
+    public List<Long> listarTodosIdsIdosos() {
+        List<Long> idsIdosos = new ArrayList<>();
+        String query = "SELECT id FROM idoso";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                idsIdosos.add(rs.getLong("id"));
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return null;
-    }*/
+        return idsIdosos;
+    }
+
+    public String obterNomeIdosoPorId(Long id) {
+        String nomeIdoso = null;
+        String query = "SELECT nome FROM idoso WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    nomeIdoso = rs.getString("nome");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return nomeIdoso;
+    }
+
+    public List<Long> listarTodosIdsVacinas() {
+        List<Long> idsVacinas = new ArrayList<>();
+        String query = "SELECT id FROM vacina";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                idsVacinas.add(rs.getLong("id"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return idsVacinas;
+    }
+
+    public String obterNomeVacinaPorId(Long id) {
+        String nomeVacina = null;
+        String query = "SELECT nome FROM vacina WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    nomeVacina = rs.getString("nome");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return nomeVacina;
+    }
 }
