@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -237,12 +238,16 @@ public class AgendaForm extends JFrame {
 
     private Agenda construirAgenda(DateTimeFormatter timeFormatter) throws Exception {
         LocalDate dataVisita = converterData(campoDataVisita.getText());
-        LocalTime horaVisita = converterHora(campoHoraVisita.getText(), timeFormatter);
+        LocalTime horaVisita = converterHora(campoHoraVisita.getText());
         LocalDate dataAplicacao = converterData(campoDataAplicacao.getText());
 
-        long idAgente = campoIdAgente.getSelectedIndex();
-        long idIdoso = campoIdIdoso.getSelectedIndex();
-        long idVacina = campoIdVacina.getSelectedIndex();
+        int indexAgente = campoIdAgente.getSelectedIndex();
+        int indexIdoso = campoIdIdoso.getSelectedIndex();
+        int indexVacina = campoIdVacina.getSelectedIndex();
+        Long idAgente = idsAgentes.get(indexAgente);
+        Long idIdoso = idsAgentes.get(indexIdoso);
+        Long idVacina = idsAgentes.get(indexVacina);
+
 
         if (campoId.getText().isEmpty()) {
             return new Agenda(idAgente, idIdoso, idVacina, dataVisita, horaVisita, campoInfo.getText(), dataAplicacao);
@@ -303,14 +308,15 @@ public class AgendaForm extends JFrame {
         return LocalDate.parse(data, dateFormatter);
     }
 
-    public LocalTime converterHora(String hora, DateTimeFormatter timeFormatter) throws DateTimeParseException {
-        return LocalTime.parse((hora + ":00"), timeFormatter);
+    private LocalTime converterHora(String hora) throws DateTimeParseException {
+        String horaSemMascara = hora.replace("_", "0");
+        return LocalTime.parse(horaSemMascara);
     }
 
     private void preencherAgentes() {
         try {
             AgendaDao dao = new AgendaDao();
-            List<Long> idsAgentes = dao.listarTodosIdsAgentes();
+            idsAgentes = dao.listarTodosIdsAgentes(); // Atualiza a lista de IDs de agentes
             for (Long id : idsAgentes) {
                 campoIdAgente.addItem(dao.obterNomeAgentePorId(id));
             }
@@ -318,6 +324,8 @@ public class AgendaForm extends JFrame {
             e.printStackTrace();
         }
     }
+
+    private List<Long> idsAgentes = new ArrayList<>();
 
     private void preencherIdosos() {
         try {
